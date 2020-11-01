@@ -7,12 +7,12 @@
 
     <div class="pact-list">
         <div *ngFor="let condition of pacts; index as i;">
-            <div class="row" *ngIf="condition.name != 'Personal Liability' || hellMode"> 
+            <div class="row align-items-center" *ngIf="condition.name != 'Personal Liability' || hellMode"> 
                 <div class="col-6 pact" [ngClass]="{'locked' : condition.locked}">{{ condition.name }}</div>
                 <div class="col-2">
-                    <div class="row justify-content-center">
-                        <div class="col-1 level" [ngClass]="{'locked' : condition.locked}">{{ condition.selectedLevel }}</div>
-                        <div class="col-1">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-xs-2 level" [ngClass]="{'locked' : condition.locked}">{{ condition.selectedLevel }}</div>
+                        <div class="col-xs-2">
                             <button *ngIf="condition.locked" class="lock locked" alt="unlock this level" (click)="unlock([i])"></button>
                             <button *ngIf="!condition.locked" class="unlocked-lock" alt="lock in this level" (click)="lock([i])"></button>
                         </div>
@@ -21,10 +21,10 @@
 
                 <div class="col-2">
                     <div class="row justify-content-center">
-                        <div class="col-1">
-                        <button class="minus-level" [ngClass]="{'locked' : condition.locked}" (click)="decrement([i])" [disabled]="condition.locked || isMinIndex(condition)">-</button>
+                        <div class="col-2 counter-button-wrapper">
+                            <button class="minus-level" [ngClass]="{'locked' : condition.locked}" (click)="decrement([i])" [disabled]="condition.locked || isMinIndex(condition)">-</button>
                         </div>
-                        <div class="col-1">
+                        <div class="col-2 counter-button-wrapper">
                             <button class="plus-level" [ngClass]="{'locked' : condition.locked}" (click)="increment([i])" [disabled]="condition.locked || isMaxIndex(condition)">+</button>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <br>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center align-items-center">
             <div class="heat-large">Target Heat:</div>
             <input class="target-input" type="number" min=0 max=64 [(ngModel)]="targetHeat">
             <button class="randomize-button" (click)="randomize()">Randomize</button>

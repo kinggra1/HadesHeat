@@ -21,24 +21,24 @@ export class PactListComponent implements OnInit {
   }
 
   increment(index) {
-    let currentLevel = pacts[index].selectedLevel;
+    let currentLevel = this.pacts[index].selectedLevel;
     currentLevel++;
-    if (currentLevel <= pacts[index].levelValues.length) {
-      pacts[index].selectedLevel = currentLevel;
+    if (currentLevel <= this.pacts[index].levelValues.length) {
+      this.pacts[index].selectedLevel = currentLevel;
     }
   }
 
   decrement([index]) {
-    let currentLevel = pacts[index].selectedLevel;
+    let currentLevel = this.pacts[index].selectedLevel;
     currentLevel--;
     if (currentLevel >= 0) {
-      pacts[index].selectedLevel = currentLevel;
+      this.pacts[index].selectedLevel = currentLevel;
     }
   }
 
   hellModeToggled(hellMode) {
     if (hellMode) {
-      pacts.forEach(condition => {
+      this.pacts.forEach(condition => {
         if (this.isHellModeCondition(condition) && condition.selectedLevel < 1) {
           condition.selectedLevel = 1;
         }
@@ -46,7 +46,7 @@ export class PactListComponent implements OnInit {
     } else {
 
       // Reset the "Hell Mode Only" condition to be level 0.
-      pacts[5].selectedLevel = 0;
+      this.pacts[15].selectedLevel = 0;
     }
   }
 
@@ -59,7 +59,7 @@ export class PactListComponent implements OnInit {
   }
 
   randomize() {
-    // The selected pacts are a subset, so we can should merge with the original and copy over levels to maintain the size of the list.
+    // The selected this.pacts are a subset, so we can should merge with the original and copy over levels to maintain the size of the list.
     this.pacts = randomize(this.pacts, this.targetHeat, this.hellMode);
   }
 

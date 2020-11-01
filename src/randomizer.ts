@@ -53,29 +53,32 @@ function validHeatSubset(PactsList, n, remainingSum, DECISION_CACHE, selectedPac
     let randomizedLevels = shuffle(Array(numLevels).fill(-1).map((_, i) => i));
     // Adjusted cost of skipping a Hell Mode Condition, because we will actually always be selecting level 1 at minimum.
     let hellModeConditionSkipCost = (hellModeEnabled && isHellModeCondition(nextPact)) ? 1 : 0;
-    
+
     // Iterate through the possible level heat values of the next Pact for recursion.
     for (let i = 0; i < numLevels; i++) {
 
-        let level = randomizedLevels[i];
+        let levelIndex = randomizedLevels[i];
 
-        let levelValuesIndex = level;
+        let levelValuesIndex = levelIndex;
         // If we are in hell mode, find cost by pretending we're one level higher than we actually are
         // and if we are currently selecting the max level, skip.
         if (hellModeEnabled && isHellModeCondition(nextPact)) {
             levelValuesIndex += 1;
             if (levelValuesIndex >= nextPact.levelValues.length) {
-                console.log(nextPact.name + " " + levelValuesIndex)
-                continue;
+                if (validHeatSubset(PactsList, n-1, remainingSum, DECISION_CACHE, selectedPacts, hellModeEnabled)) {
+                    DECISION_CACHE[remainingSum][n] = true;
+                    return true;
+                } else {
+                    continue;
+                }
             }
         }
 
-        let value = nextPact.levelValues[levelValuesIndex];
-        
+        let value = nextPact.levelValues[levelValuesIndex] - hellModeConditionSkipCost;
         
         // If we cannot possible include this Pact at this level, skip it.
         if (value > remainingSum) {
-            if (validHeatSubset(PactsList, n-1, remainingSum - hellModeConditionSkipCost, DECISION_CACHE, selectedPacts, hellModeEnabled)) {
+            if (validHeatSubset(PactsList, n-1, remainingSum, DECISION_CACHE, selectedPacts, hellModeEnabled)) {
                 DECISION_CACHE[remainingSum][n] = true;
                 return true;
             } else {
@@ -83,10 +86,10 @@ function validHeatSubset(PactsList, n, remainingSum, DECISION_CACHE, selectedPac
             }
         }
 
-        // Then try both including this level of the current Pact.
+        // Then try including this level of the current Pact.
         // If we included this Pact when the subroutine finds a solution, add it in the result with level set.
         if (validHeatSubset(PactsList, n-1, remainingSum-value, DECISION_CACHE, selectedPacts, hellModeEnabled)) {
-            nextPact.selectedLevel = level+1;
+            nextPact.selectedLevel = levelIndex+1;
             selectedPacts.push(nextPact);
             return true;
         }
@@ -126,12 +129,20 @@ function isHellModeCondition(condition) {
     });
   }
 
+  function totalHeat(conditions) {
+      let total = 0;
+      conditions.forEach(condition => {
+          total += condition.selectedLevel == 0 ? 0 : condition.levelValues[condition.selectedLevel - 1];
+      });
+      return total;
+  }
+
 
 // var TARGET_SUM = 63;
 
-export function randomize(allPacts, targetHeat, hellModeEnabled) {
+export function randomize(inputPacts, targetHeat, hellModeEnabled) {
 
-    let currentConditions = [...allPacts];
+    let currentConditions = [...inputPacts];
 
     // Reset the DECISION_CACHE for recursive caching.
     DECISION_CACHE.forEach(array => {
@@ -150,10 +161,12 @@ export function randomize(allPacts, targetHeat, hellModeEnabled) {
     // Make a view of the pacts that we can actually modify (those that are not locked)
     // and subtract the value of the locked 
     let unlockedPacts = [];
+    let lockedPacts = [];
     currentConditions.forEach(pact => {
         if (pact.locked) {
             modifiedTargetHeat -= pact.selectedLevel == 0 ? 0 : pact.levelValues[pact.selectedLevel - 1];
-        } else if (hellModeEnabled || pact.sortOrder != 16) {
+            lockedPacts.push({...pact});
+        } else if (pact.sortOrder != 16) {
             // Push copies to maintain the current state of currentConditions
             unlockedPacts.push({...pact});
         }
@@ -161,25 +174,25 @@ export function randomize(allPacts, targetHeat, hellModeEnabled) {
 
     if (modifiedTargetHeat < 0) {
         alert("Currently locked Conditions exceed Target Heat value.");
-        if (hellModeEnabled) {
-            addHellModeLevels(currentConditions);
-        }
-        return currentConditions;
+        return inputPacts;
     }
 
     // Clear the selected levels of the target list of pacts.
     unlockedPacts.forEach(pact => { pact.selectedLevel = 0; });
-    let result = generateHeatCombination(unlockedPacts, unlockedPacts.length, targetHeat, hellModeEnabled);
+    let result = generateHeatCombination(unlockedPacts, unlockedPacts.length, modifiedTargetHeat, hellModeEnabled);
 
     // Case where we were unable to find a valid combination, return the input list.
-    if (result.length == 0 && targetHeat != 0) {
+    if (result.length == 0 && modifiedTargetHeat != 0) {
         return currentConditions;
     }
 
     // result.sort(function(a, b) {return a.sortOrder - b.sortOrder;});
 
-    // If we have a valid result returned, we should zero out and reset conditions to match the result
+    // If we have a valid result returned, merge with skipped conditions and add back Hell Mode conditions (if enabled).
     currentConditions.forEach((condition) => {condition.selectedLevel = 0});
+    lockedPacts.forEach((lockedCondition) => {
+        currentConditions[lockedCondition.sortOrder-1].selectedLevel = lockedCondition.selectedLevel;
+    })
     result.forEach((resultCondition) => {
         currentConditions[resultCondition.sortOrder-1].selectedLevel = resultCondition.selectedLevel;
     })

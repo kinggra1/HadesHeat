@@ -6,13 +6,114 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+
+@media (min-width: 800px) {
+    .pact-list {
+        min-width: 750px;
+    }
+
+    .pact-heading {
+        font-size: 2rem;
+    }
+
+    .pact {
+        font-size: 1.9rem;
+    }
+
+    .level {
+        font-size: 1.9rem;
+    }
+
+    .heat-small {
+        font-size: 1.9rem;
+    }
+
+    .heat-large {
+        font-size: 2.2rem;
+    }
+    .lock, .unlocked-lock, .minus-level, .plus-level {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+
+@media (max-width: 800px) {
+    .pact-heading {
+        font-size: 1rem;
+    }
+
+    .pact {
+        font-size: 0.9rem;
+    }
+
+    .level {
+        font-size: 1.1rem;
+    }
+
+    .heat-small {
+        font-size: 1.4rem;
+    }
+
+    .heat-large {
+        font-size: 1.5rem;
+    }
+    .counter-button-wrapper {
+        padding: 0;
+        margin: 7px;
+        width: 25px;
+    }
+
+    .lock, .unlocked-lock, .minus-level, .plus-level {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 478px) {
+    .pact-heading {
+        font-size: 0.5rem;
+    }
+
+    .pact {
+        font-size: 0.8rem;
+    }
+
+    .level {
+        font-size: 1rem;
+    }
+
+    .heat-small {
+        font-size: 0.9rem;
+    }
+
+    .heat-large {
+        font-size: 1rem;
+    }
+
+    .counter-button-wrapper {
+        padding: 0;
+        margin: 7px;
+        width: 25px;
+    }
+    
+    .lock, .unlocked-lock, .minus-level, .plus-level {
+        width: 20px;
+        height: 20px;
+    }
+
+    .counter-button-wrapper {
+        width: 20px;
+    }
+}
+
 .pact-list {
     background-color: #2B2A25;
     border-radius: 5px;
     padding: 20px;
-    min-width: 750px;
     white-space: nowrap;
 }
+
 .pact-list-footer {
     padding-left: 20px;
     padding-right: 20px;
@@ -21,21 +122,30 @@
 .pact-heading {
     color: white;
     font-family: Alegreya;
-    font-size: 2rem;
 }
 
 .pact {
     color: #FF503C;
     font-family: Alegreya;
-    font-size: 1.9rem;
 }
 
 .level {
     color: white;
     font-family: Alegreya;
-    font-size: 1.9rem;
+    padding-right: 5px;
 
     text-align: right;
+}
+
+.heat-small {
+    color: white;
+    font-family: Alegreya;
+}
+
+.heat-large {
+    color: white;
+    font-family: Alegreya;
+    margin-right: 5px;
 }
 
 .locked {
@@ -47,8 +157,6 @@
     background-size: 100%;
     background-color: #444;
     padding: 2px;
-    width:30px;
-    height:30px;
     border-radius: 2px;
 }
 
@@ -57,22 +165,7 @@
     background-size: 100%;
     background-color: #999;
     padding: 2px;
-    width:30px;
-    height:30px;
     border-radius: 2px;
-}
-
-.heat-small {
-    color: white;
-    font-family: Alegreya;
-    font-size: 1.9rem;
-}
-
-.heat-large {
-    color: white;
-    font-family: Alegreya;
-    font-size: 2.2rem;
-    margin-right: 5px;
 }
 
 .target-input {
@@ -90,14 +183,20 @@
     margin-left: 5px;
 }
 
+.counter-button-wrapper {
+
+}  
+
 .minus-level, .plus-level {
-    width: 30px;
-    height: 30px;
     background-color: #665A54;
     color: white;
     font-family: Alegreya;
     text-align: center;
     font-size: 10pt;
+
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 
     border-radius: 3px;
     padding: 1px;
@@ -131,7 +230,7 @@ button:disabled {
         $index: 2rem;
         $mainVal: 1.5rem;
     } @else if $res == 'lg' {
-        $index: 3rem;
+        $index: 2.5rem;
         $mainVal: 2rem;
     } @else if $res == 'xl' {
         $index: 4rem;
@@ -172,6 +271,10 @@ button:disabled {
 
 .custom-switch.custom-switch-lg {
     @include switch('lg');
+}
+
+.custom-switch.custom-switch-lg {
+    @include switch('md');
 }
 
 .custom-switch.custom-switch-xl {

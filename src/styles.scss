@@ -11,6 +11,25 @@
     src: url(assets/fonts/AlegreyaSansSC-ExtraBold.ttf) format('truetype');
 }
 
+@media (min-width: 800px) {
+  h1 {
+      font-size: 4rem;
+  }
+}
+
+
+@media (max-width: 800px) {
+   h1 {
+     font-size: 2rem;
+   }
+}
+
+@media (max-width: 450px) {
+  h1 {
+    font-size: 1rem;
+  }
+}
+
 .main-background {
     background-color: #4A3D34;
     padding: 20px;
@@ -19,7 +38,6 @@
 h1 {
   color: #FF503C;
   font-family: Casesar;
-  font-size: 400%;
 }
 h2 {
   color: white;
