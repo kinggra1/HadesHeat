@@ -1,0 +1,179 @@
+.app-pact-list {
+    padding: 20px;
+}
+
+.pact-list-header {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.pact-list {
+    background-color: #2B2A25;
+    border-radius: 5px;
+    padding: 20px;
+    min-width: 750px;
+    white-space: nowrap;
+}
+.pact-list-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.pact-heading {
+    color: white;
+    font-family: Alegreya;
+    font-size: 2rem;
+}
+
+.pact {
+    color: #FF503C;
+    font-family: Alegreya;
+    font-size: 1.9rem;
+}
+
+.level {
+    color: white;
+    font-family: Alegreya;
+    font-size: 1.9rem;
+
+    text-align: right;
+}
+
+.locked {
+    opacity: 0.2;
+}
+
+.lock {
+    background: url(../../assets/images/locked.png);
+    background-size: 100%;
+    background-color: #444;
+    padding: 2px;
+    width:30px;
+    height:30px;
+    border-radius: 2px;
+}
+
+.unlocked-lock{
+    background: url(../../assets/images/unlocked.png);
+    background-size: 100%;
+    background-color: #999;
+    padding: 2px;
+    width:30px;
+    height:30px;
+    border-radius: 2px;
+}
+
+.heat-small {
+    color: white;
+    font-family: Alegreya;
+    font-size: 1.9rem;
+}
+
+.heat-large {
+    color: white;
+    font-family: Alegreya;
+    font-size: 2.2rem;
+    margin-right: 5px;
+}
+
+.target-input {
+    width: 50px;
+    height: 40px;
+    border: none;
+    border-radius: 2px;
+}
+
+.randomize-button {
+    height: 40px;
+    font-family: Alegreya;
+    border-radius: 5px;
+    
+    margin-left: 5px;
+}
+
+.minus-level, .plus-level {
+    width: 30px;
+    height: 30px;
+    background-color: #665A54;
+    color: white;
+    font-family: Alegreya;
+    text-align: center;
+    font-size: 10pt;
+
+    border-radius: 3px;
+    padding: 1px;
+}
+
+button:disabled {
+    background-color: #555;
+    color: #444;
+}
+
+
+/* Enabled */
+.custom-control-input:checked~.custom-control-label::before
+{
+  border-color: #000;
+  background-color: #FF503C;
+}
+
+/* Disabled */
+.custom-control-label:before{
+    background-color:#888;
+  }
+
+
+
+@mixin switch($res: 'sm') {
+    $index: 1rem;
+    $mainVal: 1rem;
+  
+    @if $res == 'md' {
+        $index: 2rem;
+        $mainVal: 1.5rem;
+    } @else if $res == 'lg' {
+        $index: 3rem;
+        $mainVal: 2rem;
+    } @else if $res == 'xl' {
+        $index: 4rem;
+        $mainVal: 2.5rem;
+    }
+
+    .custom-control-label {
+        padding-left: #{$index};
+        // padding-bottom: #{$mainVal};
+    }
+
+    .custom-control-label::before {
+        height: $mainVal;
+        width: calc(#{$index} + 0.75rem);
+        border-radius: $mainVal * 2;
+    }
+
+    .custom-control-label::after {
+        width: calc(#{$mainVal} - 4px);
+        height: calc(#{$mainVal} - 4px);
+        border-radius: calc(#{$index} - (#{$mainVal} / 2));
+    }
+
+    .custom-control-input:checked ~ .custom-control-label::after {
+        transform: translateX(calc(#{$mainVal} - 0.25rem));
+    }
+}
+
+// YOU CAN PUT ALL RESOLUTION HERE
+// sm - DEFAULT, md, lg, xl
+.custom-switch.custom-switch-sm {
+    @include switch();
+}
+
+.custom-switch.custom-switch-md {
+    @include switch('md');
+}
+
+.custom-switch.custom-switch-lg {
+    @include switch('lg');
+}
+
+.custom-switch.custom-switch-xl {
+    @include switch('xl');
+}
